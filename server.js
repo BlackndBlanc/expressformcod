@@ -5,11 +5,15 @@ import { createRequestHandler } from "@remix-run/express";
 
 const app = express();
 const port = Number(process.env.PORT || 3000);
+const host = process.env.HOST || "0.0.0.0";
 const build = await import("./build/server/index.js");
 
 app.disable("x-powered-by");
 app.use(compression());
 app.use(morgan("tiny"));
+app.get("/health", (_request, response) => {
+  response.status(200).send("ok");
+});
 
 app.use(
   "/assets",
@@ -18,6 +22,6 @@ app.use(
 app.use(express.static("build/client", { maxAge: "1h" }));
 app.all("*", createRequestHandler({ build, mode: process.env.NODE_ENV }));
 
-app.listen(port, () => {
-  console.log(`Express Form COD listening on port ${port}`);
+app.listen(port, host, () => {
+  console.log(`Express Form COD listening on ${host}:${port}`);
 });
