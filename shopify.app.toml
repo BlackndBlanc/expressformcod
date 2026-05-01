@@ -1,0 +1,22 @@
+name = "Express Form COD"
+client_id = "${SHOPIFY_API_KEY}"
+application_url = "${SHOPIFY_APP_URL}"
+embedded = true
+
+[access_scopes]
+scopes = "write_draft_orders,write_orders,read_products"
+
+[auth]
+redirect_urls = [
+  "${SHOPIFY_APP_URL}/auth/callback",
+  "${SHOPIFY_APP_URL}/auth/shopify/callback",
+  "${SHOPIFY_APP_URL}/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2025-01"
+
+[[extensions]]
+type = "theme_app_extension"
+name = "express-form-cod-theme"
+handle = "express-form-cod-theme"

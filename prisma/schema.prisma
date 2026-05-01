@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Session {
+  id            String    @id
+  shop          String
+  state         String
+  isOnline      Boolean   @default(false)
+  scope         String?
+  expires       DateTime?
+  accessToken   String
+  userId        BigInt?
+  firstName     String?
+  lastName      String?
+  email         String?
+  accountOwner  Boolean   @default(false)
+  locale        String?
+  collaborator  Boolean?  @default(false)
+  emailVerified Boolean?  @default(false)
+}
+
+model StoreSettings {
+  id             String   @id @default(cuid())
+  shop           String   @unique
+  fullNameLabel  String   @default("Full name")
+  phoneLabel     String   @default("Phone")
+  cityLabel      String   @default("City")
+  addressLabel   String   @default("Address")
+  quantityLabel  String   @default("Quantity")
+  buttonText     String   @default("Order with cash on delivery")
+  successMessage String   @default("Thank you. We received your order.")
+  isEnabled      Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  submissions CodSubmission[]
+}
+
+model CodSubmission {
+  id              String           @id @default(cuid())
+  shop            String
+  productId       String
+  variantId       String?
+  productTitle    String?
+  fullName        String
+  phone           String
+  city            String
+  address         String
+  quantity        Int
+  status          CodOrderStatus   @default(PENDING)
+  draftOrderId    String?
+  draftOrderName  String?
+  shopifyOrderId  String?
+  errorMessage    String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  storeSettingsId String?
+  storeSettings   StoreSettings?   @relation(fields: [storeSettingsId], references: [id])
+
+  @@index([shop])
+  @@index([createdAt])
+}
+
+enum CodOrderStatus {
+  PENDING
+  DRAFT_CREATED
+  FAILED
+}

@@ -1,0 +1,63 @@
+{{ 'express-form-cod.css' | asset_url | stylesheet_tag }}
+
+{% assign current_variant = product.selected_or_first_available_variant %}
+
+<div
+  class="express-form-cod"
+  data-express-form-cod
+  data-app-url="{{ block.settings.app_url | escape }}"
+  data-shop="{{ shop.permanent_domain | escape }}"
+  data-product-id="{{ product.admin_graphql_api_id | escape }}"
+  data-variant-id="{{ current_variant.admin_graphql_api_id | escape }}"
+  data-product-title="{{ product.title | escape }}"
+>
+  <form class="express-form-cod__form" data-express-form-cod-form>
+    <div class="express-form-cod__field">
+      <label data-label="fullName">Full name</label>
+      <input name="fullName" type="text" autocomplete="name" required>
+    </div>
+
+    <div class="express-form-cod__field">
+      <label data-label="phone">Phone</label>
+      <input name="phone" type="tel" autocomplete="tel" required>
+    </div>
+
+    <div class="express-form-cod__field">
+      <label data-label="city">City</label>
+      <input name="city" type="text" autocomplete="address-level2" required>
+    </div>
+
+    <div class="express-form-cod__field">
+      <label data-label="address">Address</label>
+      <textarea name="address" rows="3" autocomplete="street-address" required></textarea>
+    </div>
+
+    <div class="express-form-cod__field">
+      <label data-label="quantity">Quantity</label>
+      <input name="quantity" type="number" min="1" value="1" required>
+    </div>
+
+    <button class="express-form-cod__button" type="submit" data-express-form-cod-button>
+      Order with cash on delivery
+    </button>
+
+    <p class="express-form-cod__message" data-express-form-cod-message role="status"></p>
+  </form>
+</div>
+
+{{ 'express-form-cod.js' | asset_url | script_tag }}
+
+{% schema %}
+{
+  "name": "Express Form COD",
+  "target": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "app_url",
+      "label": "App URL",
+      "info": "Use the same public URL as SHOPIFY_APP_URL, without a trailing slash."
+    }
+  ]
+}
+{% endschema %}

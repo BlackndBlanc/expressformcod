@@ -1,0 +1,7 @@
+name = "Express Form COD Theme"
+type = "theme_app_extension"
+
+[[blocks]]
+type = "cod-form"
+name = "COD Form"
+target = "section"
