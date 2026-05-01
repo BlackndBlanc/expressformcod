@@ -12,7 +12,6 @@ import {
 } from "@remix-run/react";
 import { AppProvider } from "@shopify/polaris";
 import polarisStyles from "@shopify/polaris/build/esm/styles.css";
-import englishI18n from "@shopify/polaris/locales/en.json";
 import type { ReactNode } from "react";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: polarisStyles }];
@@ -37,7 +36,7 @@ export default function App() {
       </head>
       <body>
         <script src="https://cdn.shopify.com/shopifycloud/app-bridge.js" data-api-key={apiKey} />
-        <AppProvider i18n={englishI18n} linkComponent={RemixPolarisLink}>
+        <AppProvider i18n={{}} linkComponent={RemixPolarisLink}>
           <Outlet />
         </AppProvider>
         <ScrollRestoration />
