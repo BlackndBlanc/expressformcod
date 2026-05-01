@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "remix build",
+    "build": "prisma generate && prisma migrate deploy && remix build",
     "dev": "shopify app dev",
     "docker-start": "docker compose up -d",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
