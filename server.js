@@ -10,7 +10,7 @@ let remixHandler;
 
 async function getRemixHandler() {
   if (!remixHandler) {
-    const build = await import("./build/index.js");
+    const build = await import("./build/server/index.js");
     remixHandler = createRequestHandler({ build, mode: process.env.NODE_ENV });
   }
 
@@ -20,15 +20,17 @@ async function getRemixHandler() {
 app.disable("x-powered-by");
 app.use(compression());
 app.use(morgan("tiny"));
+
 app.get("/health", (_request, response) => {
   response.status(200).send("ok");
 });
 
 app.use(
-  "/build",
-  express.static("public/build", { immutable: true, maxAge: "1y" })
+  "/assets",
+  express.static("build/client/assets", { immutable: true, maxAge: "1y" })
 );
-app.use(express.static("public", { maxAge: "1h" }));
+app.use(express.static("build/client", { maxAge: "1h" }));
+
 app.all("*", async (request, response, next) => {
   try {
     const handler = await getRemixHandler();

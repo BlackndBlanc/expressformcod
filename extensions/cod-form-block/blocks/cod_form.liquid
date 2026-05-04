@@ -1,0 +1,77 @@
+{{ 'form.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'form.js' | asset_url }}" defer></script>
+
+{% if product %}
+  <div class="express-cod-block" 
+       data-variant-id="{{ product.selected_or_first_available_variant.id }}" 
+       data-product-id="{{ product.id }}"
+       data-shop="{{ shop.permanent_domain }}">
+       
+    <div class="express-cod-header" style="background-color: {{ block.settings.theme_color }}; color: #fff;">
+      <h3>{{ block.settings.form_title }}</h3>
+    </div>
+    
+    <div class="express-cod-body">
+      <form id="express-cod-form">
+        <input type="hidden" name="productId" value="{{ product.id }}">
+        
+        <div class="express-form-group">
+          <label for="cod-fullName">Full Name <span class="required">*</span></label>
+          <input type="text" id="cod-fullName" name="fullName" required placeholder="John Doe">
+        </div>
+        
+        <div class="express-form-group">
+          <label for="cod-phone">Phone Number <span class="required">*</span></label>
+          <input type="tel" id="cod-phone" name="phone" required placeholder="+1234567890">
+        </div>
+        
+        <div class="express-form-group">
+          <label for="cod-city">City <span class="required">*</span></label>
+          <input type="text" id="cod-city" name="city" required placeholder="New York">
+        </div>
+        
+        <div class="express-form-group">
+          <label for="cod-address">Complete Address <span class="required">*</span></label>
+          <textarea id="cod-address" name="address" required placeholder="Apt 4B, 123 Main St"></textarea>
+        </div>
+        
+        <div class="express-form-group">
+          <label for="cod-quantity">Quantity</label>
+          <input type="number" id="cod-quantity" name="quantity" value="1" min="1" required>
+        </div>
+        
+        <button type="submit" class="express-btn-submit" id="express-cod-submit" style="background-color: {{ block.settings.theme_color }};">
+          <span class="btn-text">Buy Now - Cash on Delivery</span>
+          <span class="loader" style="display: none;"></span>
+        </button>
+      </form>
+      <div id="express-cod-success" style="display: none;" class="success-message">
+        Your order has been placed successfully! We will contact you soon.
+      </div>
+      <div id="express-cod-error" style="display: none;" class="error-message">
+        Failed to place order. Please try again.
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Express Form COD",
+  "target": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "form_title",
+      "label": "Form Title",
+      "default": "Order Now - Pay on Delivery"
+    },
+    {
+      "type": "color",
+      "id": "theme_color",
+      "label": "Theme Color",
+      "default": "#000000"
+    }
+  ]
+}
+{% endschema %}
