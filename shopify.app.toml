@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "503c6d04087a5e0fbbf1dc0c446c3462"
-application_url = "https://expressformcod.com/"
+application_url = "https://expressformcod.noirblanc.cloud/"
 embedded = true
 name = "express-form-cod"
 
@@ -22,9 +22,9 @@ scopes = "read_products,write_products,read_draft_orders,write_draft_orders,read
 
 [auth]
 redirect_urls = [
-  "https://expressformcod.com/auth/callback",
-  "https://expressformcod.com/auth/shopify/callback",
-  "https://expressformcod.com/api/auth/callback"
+  "https://expressformcod.noirblanc.cloud/auth/callback",
+  "https://expressformcod.noirblanc.cloud/auth/shopify/callback",
+  "https://expressformcod.noirblanc.cloud/api/auth/callback"
 ]
 
 [build]
@@ -32,6 +32,6 @@ include_config_on_deploy = true
 automatically_update_urls_on_dev = true
 
 [app_proxy]
-url = "https://expressformcod.com/"
+url = "https://expressformcod.noirblanc.cloud/"
 subpath = "express-cod"
 prefix = "apps"
