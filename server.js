@@ -7,6 +7,7 @@ const app = express();
 const port = Number(process.env.PORT || 3000);
 const host = process.env.HOST || "0.0.0.0";
 let remixHandler;
+let prisma;
 
 async function getRemixHandler() {
   if (!remixHandler) {
@@ -17,12 +18,48 @@ async function getRemixHandler() {
   return remixHandler;
 }
 
+async function getPrisma() {
+  if (!prisma) {
+    const { PrismaClient } = await import("@prisma/client");
+    prisma = new PrismaClient();
+  }
+
+  return prisma;
+}
+
 app.disable("x-powered-by");
 app.use(compression());
 app.use(morgan("tiny"));
 
 app.get("/health", (_request, response) => {
   response.status(200).send("ok");
+});
+
+app.get("/health/db", async (_request, response) => {
+  try {
+    const db = await getPrisma();
+    const probe = await db.hostingerSupabaseProbe.create({
+      data: {
+        source: "hostinger-health",
+        note: "Database write test from /health/db",
+      },
+    });
+    const total = await db.hostingerSupabaseProbe.count();
+
+    response.status(200).json({
+      ok: true,
+      database: "connected",
+      insertedId: probe.id,
+      total,
+    });
+  } catch (error) {
+    console.error("Express Form COD database health check failed", error);
+    response.status(500).json({
+      ok: false,
+      database: "failed",
+      error: error instanceof Error ? error.message : "Unknown database error",
+    });
+  }
 });
 
 app.use(

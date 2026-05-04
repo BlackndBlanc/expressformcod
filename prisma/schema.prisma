@@ -55,3 +55,10 @@ model Submission {
   draftOrderId String?
   createdAt    DateTime @default(now())
 }
+
+model HostingerSupabaseProbe {
+  id        String   @id @default(cuid())
+  source    String   @default("hostinger")
+  note      String?
+  createdAt DateTime @default(now())
+}
